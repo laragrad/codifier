@@ -17,7 +17,7 @@
 	},
 	"autoload" : {
 		"psr-4" : {
-			"Laragrad\\Codifier" : "src"
+			"Laragrad\\Codifier\\" : "src"
 		}
 	},
 	"minimum-stability" : "dev"
