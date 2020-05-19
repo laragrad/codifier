@@ -3,7 +3,7 @@
 	"description" : "",
 	"keywords" : [
 		"laravel",
-		"codifier",
+		"codifier"
 	],
 	"type" : "package",
 	"license" : "MIT",
@@ -13,7 +13,7 @@
 		}
 	],
 	"require" : {
-		"php" : "^7.2.0",
+		"php" : "^7.2.0"
 	},
 	"autoload" : {
 		"psr-4" : {
