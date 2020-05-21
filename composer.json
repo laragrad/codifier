@@ -1,24 +1,24 @@
 {
-	"name" : "laragrad/codifier",
-	"description" : "",
-	"keywords" : [
+	"name": "laragrad/codifier",
+	"keywords": [
 		"laravel",
 		"codifier"
 	],
-	"type" : "package",
-	"license" : "MIT",
-	"authors" : [{
-			"name" : "Ilya Khondozhko",
-			"email" : "dev@laragrad.com"
+	"type": "package",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Ilya Khondozhko",
+			"email": "dev@laragrad.com"
 		}
 	],
-	"require" : {
-		"php" : "^7.2.0"
+	"require": {
+		"php": "^7.2.0"
 	},
-	"autoload" : {
-		"psr-4" : {
+	"autoload": {
+		"psr-4": {
 			"Laragrad\\Codifier\\" : "src"
 		}
 	},
-	"minimum-stability" : "dev"
+	"minimum-stability": "dev"
 }

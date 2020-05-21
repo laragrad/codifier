@@ -1,12 +1,18 @@
 <?php
 namespace Laragrad\Codifier\Handlers;
 
-use \Laragrad\Codifier\Handlers\AbstractHandler;
+use Laragrad\Codifier\Handlers\AbstractHandler;
 
 class CodifierExampleHandler extends AbstractHandler
 {
 
-    public static function load($sectionConfig, string $locale)
+    /**
+     *
+     * @param string $sectionConfig
+     * @param string $locale
+     * @return array
+     */
+    public static function load(string $sectionConfig, string $locale)
     {
         $data = config($sectionConfig['data_path'], []);
 

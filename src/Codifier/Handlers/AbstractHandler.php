@@ -1,18 +1,32 @@
 <?php
-
 namespace Laragrad\Codifier\Handlers;
 
 abstract class AbstractHandler
 {
 
-    protected static function transField($key, &$value, $field, $baseTransPath, string $locale) {
-
+    /**
+     *
+     * @param string $key
+     * @param array $value
+     * @param string $field
+     * @param string $baseTransPath
+     * @param string $locale
+     */
+    protected static function transField(string $key, array &$value, string $field, string $baseTransPath, string $locale)
+    {
         $transPath = $value[$field] ?? "{$baseTransPath}.{$key}.{$field}";
-        $value[$field] = self::trans($transPath, $value[$field] ?? null, $locale);
 
+        $value[$field] = self::trans($transPath, $value[$field] ?? null, $locale);
     }
 
-    protected static function trans($key, $default = null, string $locale)
+    /**
+     *
+     * @param string $key
+     * @param string $default
+     * @param string $locale
+     * @return string|unknown
+     */
+    protected static function trans(string $key, string $default = null, string $locale)
     {
         $trans = trans($key, [], $locale);
 

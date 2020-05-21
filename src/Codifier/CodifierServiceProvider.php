@@ -14,14 +14,14 @@ class CodifierServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadTranslationsFrom(__DIR__. '/../resources/lang/', 'laragrad/codifier');
+        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang/', 'laragrad/codifier');
 
         $this->publishes([
-            __DIR__. '/../resources/lang/' => resource_path('lang/vendor/laragrad/codifier'),
+            __DIR__ . '/../resources/lang/' => resource_path('lang/vendor/laragrad/codifier')
         ]);
 
         $this->publishes([
-            __DIR__ . '/../config' => config_path('laragrad/codifier'),
+            __DIR__ . '/../config' => config_path('laragrad/codifier')
         ]);
     }
 

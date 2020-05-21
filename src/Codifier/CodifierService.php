@@ -1,5 +1,4 @@
 <?php
-
 namespace Laragrad\Codifier;
 
 use Illuminate\Support\Arr;
@@ -13,7 +12,6 @@ class CodifierService
     protected $config;
 
     /**
-     *
      */
     public function __construct()
     {
@@ -93,9 +91,9 @@ class CodifierService
     {
         $sectionConfig = Arr::get($this->config, "sections.{$section}");
 
-        $loader = $sectionConfig['handler'] ?? null;
+        list ($handlerClass, $handlerMethod) = $sectionConfig['handler'] ?? null;
 
-        $data = $loader[0]::{$loader[1]}($sectionConfig, $locale);
+        $data = $handlerClass::{$handlerMethod}($sectionConfig, $locale);
 
         return $data;
     }
@@ -108,47 +106,30 @@ class CodifierService
      */
     protected function getSectionConfig(string $section)
     {
-        $sectionConfig = Arr::get($this->config, "sections.{$section}");
+        $sectionConfig = $this->config['sections'][$section];
 
         if (! isset($sectionConfig['data_path']) || ! is_string($sectionConfig['data_path'])) {
-            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_data_path_is_not_configured', [
+            throw new \Exception(trans('laragrad/codifier::messages.errors.section_data_path_config_error', [
                 'section' => $section
             ]));
         }
 
-        $loader = $sectionConfig['handler'] ?? null;
+        list ($handlerClass, $handlerMethod) = $sectionConfig['handler'] ?? null;
 
-        if (empty($loader) || ! is_array($loader)) {
-            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_is_not_configured', [
+        if (empty($handlerClass) || empty($handlerMethod) || ! is_string($handlerClass) || ! is_string($handlerMethod)) {
+            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_config_error', [
                 'section' => $section
             ]));
         }
 
-        if (! isset($loader[0]) || ! is_string($loader[0])) {
-            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_class_not_configured', [
-                'section' => $section
-            ]));
-        } elseif (! class_exists($loader[0])) {
-            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_class_is_not_exists', [
+        if (! method_exists($handlerClass, $handlerMethod)) {
+            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_config_error_2', [
                 'section' => $section,
-                'class' => $loader[0]
-            ]));
-        }
-
-        if (! isset($loader[1]) || ! is_string($loader[1])) {
-            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_method_not_configured', [
-                'section' => $section
-            ]));
-        } elseif (! method_exists($loader[0], $loader[1])) {
-            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_method_is_not_exists', [
-                'section' => $section,
-                'class' => $loader[0],
-                'method' => $loader[1]
+                'class' => $handlerClass
             ]));
         }
 
         return $sectionConfig;
-
     }
 
     /**
@@ -179,9 +160,9 @@ class CodifierService
      */
     public function checkSectionConfigExists(string $section)
     {
-        if (!Arr::has($this->config, "sections.{$section}")) {
-            throw new \Exception(trans('laragrad/codifier::messages.errors.section_configuration_not_exists', [
-                'section' => $section,
+        if (! isset($this->config['sections'][$section])) {
+            throw new \Exception(trans('laragrad/codifier::messages.errors.section_config_not_exists', [
+                'section' => $section
             ]));
         }
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace Laragrad\Codifier;
 
 use Illuminate\Support\Facades\Facade;
