@@ -35,19 +35,20 @@ Will be published next files:
 
 ## Configurating
 
-###Cache using
+See package configuration example in file `/config/laragrad/codifier/config.php`.
 
-You can enable or disable cache using by option `use_cache`
+There are two root elements
 
-### Section configurating
+* **use_cache** - A boolean option for enable or disable cache using.
+* **sections** - An array of codifier section configurations.
 
-`section` is an array of key/value pairs.
+### Section configuration
 
-Value must have next options
+Section configuration must have next options
 
-* `data_path` is a path to config consisted section data
-* `trans_base_path` is a base path to the lang translation resource
-* `handler` is an array with class and method names
+* **data_path** is a path to config consisted section data
+* **trans_base_path** is a base path to the lang translation resource
+* **handler** is an array with class and method names of section handler
 
 ## Using Codifier facade
 
