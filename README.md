@@ -10,7 +10,7 @@ Run command in console
 
 Add next lines into your `config/app.php`
 
-	$providers => [
+    $providers => [
 		...
 		\Laragrad\Codifier\CodifierServiceProvider::class,
 	],
@@ -22,8 +22,8 @@ Add next lines into your `config/app.php`
 
 Run command in console
 
-	php artisan vendor:publish
-	
+    php artisan vendor:publish
+
 and type choise number to publish `\Laragrad\Codifier\CodifierServiceProvider`
 
 Will be published next files:
@@ -50,23 +50,65 @@ Section configuration must have next options
 * **trans_base_path** - a base path to the lang translation resource
 * **handler** - handler class name
 
-## Using Codifier facade
+## Codifier facade methods
 
-### Codifier::get()
+### get()
 
-To get full codifier data of section add line
+Returns section element or full data.
 
-	$data = Codifier::get('codifier_example');
-	
-Put path to concrete element to get concrete element of codifier section data.
+    get(string $section, string|null $path, string|null $locale) : array 
 
-	$data = Codifier::get('codifier_example', '1.next');
+Arguments:
 
-Third argument is a locale.
+* **$section** - Section name.
+* **$path** - Path to section element. If it is NULL then returns full section data.
+* **$locale** - Locale code. If it is NULL then current locale.
 
-	$data = Codifier::get('codifier_example', null, 'ru');
+### getSection()
 
+Returns one section data.
 
+    getSection(string $section, string|null $locale) : array 
 
+Arguments:
 
+* **$section** - Section name.
+* **$locale** - Locale code. If it is NULL then current locale.
+
+### getSections()
+
+Returns array of many of all sections.
+
+    getSections(array|null $sections, string|null $locale) : array 
+
+Arguments:
+
+* **$sections** - Array of section names. If it is NULL then all configured sections.
+* **$locale** - Locale code. If it is NULL then current locale.
+
+### cache()
+
+Warm cache keys if cache using enabled in configuration.
+
+    cache(array|string|null $sections, array|string|null $locales) : array 
+
+Arguments:
+
+* **$sections** - One section name or array of section names. If it is NULL then all configured sections.
+* **$locales** - One locale code or array of locale codes. If it is NULL then all configured locales.
+
+Returns list of messages.
+
+### clear()
+
+Clear cache keys if cache using enabled in configuration.
+
+    clear(array|string|null $sections, array|string|null $locales) : array 
+
+Arguments:
+
+* **$sections** - One section name or array of section names. If it is NULL then all configured sections.
+* **$locales** - One locale code or array of locale codes. If it is NULL then all configured locales.
+
+Returns list of messages.
 
