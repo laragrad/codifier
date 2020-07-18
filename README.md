@@ -46,9 +46,9 @@ There are two root elements
 
 Section configuration must have next options
 
-* **data_path** is a path to config consisted section data
-* **trans_base_path** is a base path to the lang translation resource
-* **handler** is an array with class and method names of section handler
+* **data_path**  - a path to config consisted section data
+* **trans_base_path** - a base path to the lang translation resource
+* **handler** - handler class name
 
 ## Using Codifier facade
 

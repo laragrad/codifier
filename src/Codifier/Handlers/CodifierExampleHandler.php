@@ -8,18 +8,17 @@ class CodifierExampleHandler extends AbstractHandler
 
     /**
      *
-     * @param string $sectionConfig
+     * @param array $sectionConfig
      * @param string $locale
      * @return array
      */
-    public static function load(string $sectionConfig, string $locale)
+    public function load(array $sectionConfig, string $locale)
     {
         $data = config($sectionConfig['data_path'], []);
 
-        $baseTransPath = $sectionConfig['trans_base_path']; // @todo
+        $baseTransPath = $sectionConfig['trans_base_path'];
 
         foreach ($data as $key => &$value) {
-
             self::transField($key, $value, 'title', $baseTransPath, $locale);
             self::transField($key, $value, 'desc', $baseTransPath, $locale);
         }

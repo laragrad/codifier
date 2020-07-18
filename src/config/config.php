@@ -11,20 +11,15 @@ return [
      */
     'sections' => [
 
-        /* Section 'codifier_example' */
+        // Section 'codifier_example'
         'codifier_example' => [
-
-            /* Config path to section data */
+            // Config path to section data
             'data_path' => 'laragrad.codifier.codifier_example',
-
-            /* Translate base path to section translations */
+            // Translate base path to section translations
             'trans_base_path' => 'laragrad/codifier::example',
+            // Handler class and method
+            'handler' => \Laragrad\Codifier\Handlers\CodifierExampleHandler::class,
+        ],
 
-            /* Handler class and method */
-            'handler' => [
-                \Laragrad\Codifier\Handlers\CodifierExampleHandler::class,
-                'load'
-            ]
-        ]
     ]
 ];

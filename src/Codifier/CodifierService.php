@@ -19,6 +19,7 @@ class CodifierService
     }
 
     /**
+     * Get handled section data
      *
      * @param string $section
      * @param string $path
@@ -36,6 +37,7 @@ class CodifierService
     }
 
     /**
+     *
      *
      * @param string $section
      * @return array|null
@@ -89,13 +91,23 @@ class CodifierService
      */
     protected function getSectionData(string $section, string $locale)
     {
-        $sectionConfig = Arr::get($this->config, "sections.{$section}");
+        $sectionConfig = $this->getSectionConfig($section);
 
-        list ($handlerClass, $handlerMethod) = $sectionConfig['handler'] ?? null;
+        $handlerClass = $sectionConfig['handler'];
+        $handler = \App::make($handlerClass);
 
-        $data = $handlerClass::{$handlerMethod}($sectionConfig, $locale);
+        if ($handler instanceof \Laragrad\Codifier\Handlers\HandlerInterface) {
 
-        return $data;
+            return $handler->load($sectionConfig, $locale);
+
+        } else {
+
+            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_class_not_implements_interface', [
+                'section' => $section,
+                'class' => $handlerClass,
+            ]));
+
+        }
     }
 
     /**
@@ -106,28 +118,11 @@ class CodifierService
      */
     protected function getSectionConfig(string $section)
     {
-        $sectionConfig = $this->config['sections'][$section];
+        $this->checkSectionConfigExists($section);
 
-        if (! isset($sectionConfig['data_path']) || ! is_string($sectionConfig['data_path'])) {
-            throw new \Exception(trans('laragrad/codifier::messages.errors.section_data_path_config_error', [
-                'section' => $section
-            ]));
-        }
+        $sectionConfig = Arr::get($this->config, "sections.{$section}");
 
-        list ($handlerClass, $handlerMethod) = $sectionConfig['handler'] ?? null;
-
-        if (empty($handlerClass) || empty($handlerMethod) || ! is_string($handlerClass) || ! is_string($handlerMethod)) {
-            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_config_error', [
-                'section' => $section
-            ]));
-        }
-
-        if (! method_exists($handlerClass, $handlerMethod)) {
-            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_config_error_2', [
-                'section' => $section,
-                'class' => $handlerClass
-            ]));
-        }
+        $this->validateSectionConfig($section, $sectionConfig);
 
         return $sectionConfig;
     }
@@ -158,7 +153,7 @@ class CodifierService
      * @throws \Exception
      * @return boolean
      */
-    public function checkSectionConfigExists(string $section)
+    protected function checkSectionConfigExists(string $section)
     {
         if (! isset($this->config['sections'][$section])) {
             throw new \Exception(trans('laragrad/codifier::messages.errors.section_config_not_exists', [
@@ -167,5 +162,34 @@ class CodifierService
         }
 
         return true;
+    }
+
+    /**
+     *
+     * @param array $config
+     * @throws \Exception
+     */
+    protected function validateSectionConfig(string $section, array $sectionConfig)
+    {
+        if (! isset($sectionConfig['data_path']) || ! is_string($sectionConfig['data_path'])) {
+            throw new \Exception(trans('laragrad/codifier::messages.errors.section_data_path_config_error', [
+                'section' => $section
+            ]));
+        }
+
+        $handler = $sectionConfig['handler'] ?? null;
+
+        if (empty($handler) || ! is_string($handler)) {
+            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_config_error', [
+                'section' => $section
+            ]));
+        }
+
+        if (!class_exists($handler)) {
+            throw new \Exception(trans('laragrad/codifier::messages.errors.section_handler_class_not_exists', [
+                'section' => $section,
+                'class' => $handler
+            ]));
+        }
     }
 }
